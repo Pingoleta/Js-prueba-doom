@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba add</title>
+    <style>
+        /*Contneido principal*/
+        main{
+            padding-bottom: 30px;
+        }
+        main h1{
+            width: 100%;
+            color: rgb(6, 6, 59);
+            text-align: center;
+        }
+        main h1 span{
+            color: rgb(16, 16, 218);
+        }
+        main h3{
+            text-align: center;
+        }
+        /*contenido de la tabla desplegable*/
+        table{
+            width:100% ;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+        /*elementos de la tabla*/
+        th td{
+            border: 1px solid #ccc;
+            padding: 20px;
+            text-align: left;
+
+        }
+        .tabla-desplegable{
+           padding-bottom: 0.1px;
+        }
+        th{
+            background-color: #f4f4f4;
+        }
+        /*botones y demás elementos*/
+        .btn-delete{
+            margin-left: 5px;
+            background-color: #dc3545;
+            border:none;
+            color: #FFF;
+            padding: 5px 10px;
+            cursor:pointer;
+        }
+        /*formulario*/
+        form{
+            width: 100%;
+        }
+        .formulario{
+            width: 80%;
+            display: block;
+        }
+        .formulario input{
+            padding: 5px;
+
+        }
+        /*botones*/
+      
+        .btn{
+            cursor: pointer;
+            background-color: #101dcf ;
+            color: #FFF;
+        }
+       .btn:hover{
+        background-color: #323ef1;
+       }
+       #eliminar{
+        background-color: #da182c;
+       }
+       #eliminar:hover{
+        background-color: #ff031c;
+    }
+    </style>
+</head>
+<body>
+    <main>
+        <!--logo y slogan-->
+        <h1>Bienvenido a Jump <span>ADD</span></h1>
+        <h3>Donde nos encargamos de promocionar tu evento</h3><br><br>
+        <!--Tabla que muestra precio y costes-->
+        <div class="contenedor tabla">
+            <table>
+                <h2>Gestion de publicidad</h2>
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Descripcion</th>
+                        <th>Fecha de Inicio</th>
+                        <th>Fecha de Fin</th>
+                        <th>Días Publicados</th>
+                        <th>Costo Total</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="listaAnucios"></tbody>
+            </table>
+            <!--fin de la tabla-->
+        </div><!--fin del contenedor de tabla-->
+        
+        <!--COntenedor plegable-->
+        <div class="tabla-desplegable">
+            <table>
+                <thead>
+                    <tr>
+                        <th id="nombre-desplegable"></th>
+                        <th id="descripcion-desplegable"></th>
+                        <th id="fechaInicio-desplegable"></th>
+                        <th id="fechaFin-desplegable"></th>
+                        <th id="dia-desplegable"></th>
+                        <th id="costo-desplegable"></th>
+                        <th id="accion-desplegable"></th>
+                    </tr>
+                </thead>
+                <tbody id="listaAnucios"></tbody>
+            </table>
+            <!--fin de la tabla-->
+        </div><!--fin del contenedor plegable-->
+        <h2 class="bold">Costo Total:</h2><h2 id="costo" class="bold">0.00</h2>
+
+
+
+        <!--formulario !! solamente quite el  <form action="" method="post" id="formulario" >-linea129, 
+                </form>-linea153-->
+
+        
+            <h2>Para poder continuar y brindarte un gran servicio solicitamos los siguientes datos</h2>
+
+            <label for="nombre" >Nombre:</label>
+                <input type="text" id="nombre"  name="nombre" placeholder="ingrese el nombre de su evento aqui">
+            <label for="fechaInicio">Fecha de Inicio</label>
+                <input type="date" id="fechaInicio" name="fechaInicio" placeholder="fecha de inicio 0/00/0000">
+            
+            <label for="fechaFin" >Fecha de Fin</label>
+                <input type="date" id="fechaFin"placeholder="fecha de fin 0/00/0000"  >
+           
+            <label for="descripcion" >Descripcion</label>
+            <input type="text" id="descripcion" maxlength="500" name="descripcion" 
+            placeholder="Ingrese la descripcion de el anuncio">
+ 
+            <label for="dia" >Dias que requiere de promoción</label>
+                <input type="number" id="dia"placeholder="dias que ocupa promocion" >
+
+            <!--botones-->
+            <input type="button" class="btn" value="enviar" onclick="guardarDatos(), mostrar()" >
+            <input type="button" value="Eliminar publicidad" class="btn"id="eliminar" onclick="eliminar()">
+     
+        
+        
+                <!--mensaje-->
+                <p id="mensaje"> </p>
+
+
+
+    </main>
+
+
+<script>
+   
+ 
+    
+     //guardar datos
+    function guardarDatos(){
+        //declaramos las constantes que contienen los valores
+    const nombre = document.getElementById("nombre").value; //obtiene el nombre del usuario
+        alert(`Hola ${nombre}`)
+    const inicio = document.getElementById("fechaInicio").value; //obtiene el color del usuario
+    const fin = document.getElementById("fechaFin").value; 
+
+    const descripcion = document.getElementById("descripcion").value; 
+
+    const dia = document.getElementById("dia").value;
+    const costos=calculaCosto(costo);
+
+
+    //Guardar datos en el localStorage y convertir a objetos
+    localStorage.setItem("nombre", nombre);
+    localStorage.setItem("inicio", inicio);
+
+    localStorage.setItem("fin", fin);
+    localStorage.setItem("descripcion", descripcion);
+
+    localStorage.setItem("dia", dia);
+    localStorage.setItem("costo", costos);
+
+    //mostrar mensaje de comformacion
+    document.getElementById("mensaje").textContent = "Datos guardados en la localStorage";
+ }
+
+    //funcion para mostrar los datos
+    function mostrar(){
+        //llamamos los datos del localstorage
+    const nombreGuardado= localStorage.getItem("nombre"); //recuperar o traer el nombre de usuario
+    const inicioGuardado= localStorage.getItem("inicio"); //recuperar o traer el color de usuario
+
+    const finGuardo= localStorage.getItem("fin");
+    const descripcionGuardado= localStorage.getItem("descripcion");
+
+    const diaGuardado = localStorage.getItem("dia");
+    const costoGuardado = localStorage.getItem("costo");   
+
+    //Verificar si hay eleemntos gaurdados y de paso los mostramos
+    if(nombre){
+        document.getElementById("nombre-desplegable").textContent= nombreGuardado;
+        document.getElementById("fechaInicio-desplegable").textContent= inicioGuardado;
+
+        document.getElementById("descripcion-desplegable").textContent= descripcionGuardado;
+        document.getElementById("fechaFin-desplegable").textContent= finGuardo;
+
+
+       document.getElementById("dia-desplegable").textContent= diaGuardado;
+        document.getElementById("costo-desplegable")=textContent = costoGuardado;
+        document.getElementById("accion-desplegable")=textContent = vacio;
+
+    }
+    else{
+        document.getElementById("mensaje").textContent = `no hay datos gaurdados en localstorage`;
+        
+    }
+ }
+
+    //funcion para eliminar o liberar el local storage
+    function eliminar(){
+        localStorage.removeItem("nombre"); //recuperar o traer el nombre de usuario
+        localStorage.removeItem("inicio"); //recuperar o traer el color de usuario
+
+        localStorage.removeItem("fin");
+        localStorage.removeItem("descripcion");
+
+       localStorage.removeItem("dia");
+       localStorage.removeItem("costo");   
+
+       if(nombre){
+        document.getElementById("nombre-desplegable").textContent= "";
+        document.getElementById("fechaInicio-desplegable").textContent= "";
+
+        document.getElementById("descripcion-desplegable").textContent= "";
+        document.getElementById("fechaFin-desplegable").textContent= "";
+
+
+       document.getElementById("dia-desplegable").textContent= "";
+        document.getElementById("costo-desplegable")=textContent = "";
+        document.getElementById("accion-desplegable")=textContent = "";
+
+    }
+    document.getElementById("mensaje").textContent = "Datos eliminados en la localStorage";
+
+    }
+    //funcion que calcula los dias de la plataforma y su precio
+    function calculaCosto(dia) {
+    parseInt(dia);
+    costo = dia *50;
+    return costo;
+}
+
+ 
+</script>
+</body>
+</html>
